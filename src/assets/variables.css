@@ -1,0 +1,52 @@
+:root {
+  /* Dark Theme Variables */
+  --dark-bg: linear-gradient(135deg, rgba(16, 12, 27, 1) 0%, rgba(8, 8, 24, 1) 100%);
+  --dark-card-bg: rgba(16, 12, 27, 0.7);
+  --dark-text: #ffffff;
+  --dark-text-secondary: rgba(255, 255, 255, 0.7);
+  --dark-primary: #9333EA;
+  --dark-secondary: #3B82F6;
+  --dark-card-border: rgba(147, 51, 234, 0.1);
+  --dark-shadow: 0 0 20px rgba(147, 51, 234, 0.3);
+  --dark-glow: 0 0 50px rgba(147, 51, 234, 0.3), 0 0 100px rgba(59, 130, 246, 0.2);
+
+  /* Light Theme Variables */
+  --light-bg: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  --light-card-bg: rgba(255, 255, 255, 0.9);
+  --light-text: #1e293b;
+  --light-text-secondary: #64748b;
+  --light-primary: #6366f1;
+  --light-secondary: #3b82f6;
+  --light-card-border: rgba(203, 213, 225, 0.3);
+  --light-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  --light-glow: none;
+}
+
+/* Theme Classes */
+.dark-theme {
+  --bg: var(--dark-bg);
+  --card-bg: var(--dark-card-bg);
+  --text: var(--dark-text);
+  --text-secondary: var(--dark-text-secondary);
+  --primary: var(--dark-primary);
+  --secondary: var(--dark-secondary);
+  --card-border: var(--dark-card-border);
+  --shadow: var(--dark-shadow);
+  --glow: var(--dark-glow);
+  background: var(--bg);
+  color: var(--text);
+}
+
+.light-theme {
+  --bg: var(--light-bg);
+  --card-bg: var(--light-card-bg);
+  --text: var(--light-text);
+  --text-secondary: var(--light-text-secondary);
+  --primary: var(--light-primary);
+  --secondary: var(--light-secondary);
+  --card-border: var(--light-card-border);
+  --shadow: var(--light-shadow);
+  --glow: var(--light-glow);
+  background: var(--bg);
+  color: var(--text);
+} 
