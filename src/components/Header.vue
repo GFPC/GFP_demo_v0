@@ -8,22 +8,26 @@
           </router-link>
         </div>
         
-        <nav class="nav">
-          <router-link to="/" class="nav-link">Home</router-link>
-          <router-link to="/about" class="nav-link">About</router-link>
-          <router-link to="/tokenomics" class="nav-link">Tokenomics</router-link>
-          <router-link to="/roadmap" class="nav-link">Roadmap</router-link>
+        <button class="mobile-menu-btn" @click="toggleMobileMenu">
+          <span class="bar" :class="{ 'active': isMobileMenuOpen }"></span>
+        </button>
+        
+        <nav class="nav" :class="{ 'mobile-open': isMobileMenuOpen }">
+          <router-link to="/" class="nav-link" @click="closeMobileMenu">Home</router-link>
+          <router-link to="/about" class="nav-link" @click="closeMobileMenu">About</router-link>
+          <router-link to="/tokenomics" class="nav-link" @click="closeMobileMenu">Tokenomics</router-link>
+          <router-link to="/roadmap" class="nav-link" @click="closeMobileMenu">Roadmap</router-link>
           <div class="dropdown">
-            <button class="dropdown-btn">Developers</button>
-            <div class="dropdown-content">
-              <router-link to="/block-explorer" class="dropdown-link">Block Explorer</router-link>
-              <router-link to="/hash-calculator" class="dropdown-link">Hash Calculator</router-link>
-              <router-link to="/key-verifier" class="dropdown-link">Key Verifier</router-link>
+            <button class="dropdown-btn" @click="toggleDevelopersMenu">Developers</button>
+            <div class="dropdown-content" :class="{ 'mobile-open': isDevelopersMenuOpen }">
+              <router-link to="/block-explorer" class="dropdown-link" @click="closeMobileMenu">Block Explorer</router-link>
+              <router-link to="/hash-calculator" class="dropdown-link" @click="closeMobileMenu">Hash Calculator</router-link>
+              <router-link to="/key-verifier" class="dropdown-link" @click="closeMobileMenu">Key Verifier</router-link>
             </div>
           </div>
         </nav>
         
-        <div class="actions">
+        <div class="actions" :class="{ 'mobile-open': isMobileMenuOpen }">
           <div class="theme-actions">
             <button @click="toggleTheme" class="theme-button" :title="isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'">
               <span v-if="isDarkMode">🌙</span>
@@ -63,6 +67,8 @@ import { useTheme } from '../composables/useTheme';
 const { isDarkMode, currentColorTheme, toggleTheme, setColorTheme, initTheme } = useTheme();
 const isColorMenuOpen = ref(false);
 const isWalletConnected = ref(false);
+const isMobileMenuOpen = ref(false);
+const isDevelopersMenuOpen = ref(false);
 
 const selectColor = (color) => {
   setColorTheme(color);
@@ -71,6 +77,24 @@ const selectColor = (color) => {
 
 const connectWallet = () => {
   isWalletConnected.value = !isWalletConnected.value;
+};
+
+const toggleMobileMenu = () => {
+  isMobileMenuOpen.value = !isMobileMenuOpen.value;
+  if (!isMobileMenuOpen.value) {
+    isDevelopersMenuOpen.value = false;
+  }
+};
+
+const closeMobileMenu = () => {
+  isMobileMenuOpen.value = false;
+  isDevelopersMenuOpen.value = false;
+};
+
+const toggleDevelopersMenu = () => {
+  if (window.innerWidth <= 768) {
+    isDevelopersMenuOpen.value = !isDevelopersMenuOpen.value;
+  }
 };
 
 onMounted(() => {
@@ -315,18 +339,148 @@ onMounted(() => {
   color: white;
 }
 
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  position: relative;
+}
+
+.bar {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--text);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all 0.3s ease;
+}
+
+.bar::before,
+.bar::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: var(--text);
+  transition: all 0.3s ease;
+}
+
+.bar::before {
+  top: -8px;
+}
+
+.bar::after {
+  bottom: -8px;
+}
+
+.bar.active {
+  background: transparent;
+}
+
+.bar.active::before {
+  transform: rotate(45deg);
+  top: 0;
+}
+
+.bar.active::after {
+  transform: rotate(-45deg);
+  bottom: 0;
+}
+
 @media (max-width: 768px) {
+  .mobile-menu-btn {
+    display: block;
+  }
+  
   .nav {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 80%;
+    height: 100vh;
+    background: var(--card-bg);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    transition: left 0.3s ease;
+    z-index: 1000;
+  }
+  
+  .nav.mobile-open {
+    left: 0;
+  }
+  
+  .nav-link {
+    font-size: 1.2rem;
+    padding: 1rem 0;
+  }
+  
+  .dropdown {
+    width: 100%;
+  }
+  
+  .dropdown-btn {
+    width: 100%;
+    text-align: left;
+    padding: 1rem 0;
+  }
+  
+  .dropdown-content {
+    position: static;
+    width: 100%;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
     display: none;
+    padding: 0.5rem 0 0.5rem 1rem;
+    border-left: 2px solid var(--gradient);
+  }
+  
+  .dropdown-content.mobile-open {
+    display: block;
+  }
+  
+  .dropdown-link {
+    padding: 0.75rem 0;
   }
   
   .actions {
-    gap: 0.5rem;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 80%;
+    padding: 1rem;
+    background: var(--card-bg);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  
+  .actions.mobile-open {
+    transform: translateX(0);
+  }
+  
+  .theme-actions {
+    justify-content: center;
   }
   
   .connect-button {
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
+    width: 100%;
+  }
+  
+  .color-menu {
+    position: static;
+    width: 100%;
+    margin-top: 0.5rem;
   }
 }
 </style> 
