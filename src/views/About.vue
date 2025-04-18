@@ -94,10 +94,8 @@ const aboutClass = computed(() => isDarkMode.value ? 'dark-theme' : 'light-theme
 
 <style scoped>
 .about {
+  padding: 2rem 1rem;
   min-height: 100vh;
-  background: var(--bg);
-  color: var(--text);
-  padding-top: 80px;
 }
 
 /* Theme Classes */
@@ -128,58 +126,105 @@ const aboutClass = computed(() => isDarkMode.value ? 'dark-theme' : 'light-theme
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2rem;
 }
 
-section {
-  padding: 6rem 0;
+.about-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
 }
 
-h2 {
+.about-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.about-title {
   font-size: 2.5rem;
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
-.gradient-text {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  background: var(--gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.vision-text {
-  font-size: 1.25rem;
-  line-height: 1.6;
+.about-description {
   color: var(--text-secondary);
-  max-width: 800px;
-  margin: 0 auto;
-  text-align: center;
+  line-height: 1.8;
 }
 
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  margin-top: 3rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
 }
 
 .feature-card {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
-  border-radius: 12px;
-  padding: 2rem;
-  text-align: center;
-  transition: transform 0.3s ease;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
 }
 
 .feature-card:hover {
   transform: translateY(-5px);
-  box-shadow: var(--shadow);
+  box-shadow: var(--glow);
 }
 
 .feature-icon {
-  font-size: 2.5rem;
+  width: 50px;
+  height: 50px;
+  background: var(--gradient);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
   margin-bottom: 1rem;
+}
+
+.feature-title {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.feature-description {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.about-image {
+  position: relative;
+  height: 100%;
+  min-height: 400px;
+}
+
+.image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--gradient);
+  opacity: 0.1;
 }
 
 .tech-grid {

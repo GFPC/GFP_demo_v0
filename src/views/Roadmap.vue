@@ -124,7 +124,7 @@ const phases = ref([
 
 <style scoped>
 .roadmap {
-  padding: 2rem;
+  padding: 2rem 1rem;
   min-height: 100vh;
 }
 
@@ -229,7 +229,17 @@ const phases = ref([
   color: var(--text-secondary);
 }
 
+@media (max-width: 992px) {
+  .timeline-content {
+    width: 48%;
+  }
+}
+
 @media (max-width: 768px) {
+  .roadmap {
+    padding: 1.5rem 1rem;
+  }
+  
   .timeline::before {
     left: 30px;
   }
@@ -241,6 +251,52 @@ const phases = ref([
   
   .timeline-item:nth-child(odd) .timeline-content {
     margin-left: 60px !important;
+  }
+  
+  .phase-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .phase-title {
+    font-size: 1.25rem;
+  }
+  
+  .phase-date {
+    font-size: 0.9rem;
+  }
+  
+  .milestone-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
+  
+  .milestone-content h3 {
+    font-size: 1.1rem;
+  }
+  
+  .milestone-content p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .roadmap {
+    padding: 1rem 0.5rem;
+  }
+  
+  .timeline-content {
+    padding: 1rem;
+  }
+  
+  .phase-title {
+    font-size: 1.1rem;
+  }
+  
+  .milestone {
+    gap: 0.75rem;
   }
 }
 </style> 

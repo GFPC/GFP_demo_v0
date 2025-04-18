@@ -84,10 +84,175 @@ const tokenomicsClass = computed(() => isDarkMode.value ? 'dark-theme' : 'light-
 
 <style scoped>
 .tokenomics {
+  padding: 2rem 1rem;
   min-height: 100vh;
-  background: var(--bg);
-  color: var(--text);
-  padding-top: 80px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.token-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.token-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.token-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.stat-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--glow);
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.token-distribution {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 1rem;
+  padding: 1.5rem;
+}
+
+.distribution-title {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.distribution-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.distribution-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: var(--background);
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.distribution-item:hover {
+  transform: translateX(5px);
+  box-shadow: var(--shadow);
+}
+
+.item-label {
+  font-weight: 500;
+}
+
+.item-value {
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.token-chart {
+  position: sticky;
+  top: 2rem;
+}
+
+@media (max-width: 992px) {
+  .token-content {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  
+  .token-chart {
+    position: static;
+    order: -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .tokenomics {
+    padding: 1.5rem 1rem;
+  }
+  
+  .token-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .stat-card {
+    padding: 1.25rem;
+  }
+  
+  .stat-value {
+    font-size: 1.75rem;
+  }
+  
+  .distribution-title {
+    font-size: 1.25rem;
+  }
+  
+  .distribution-item {
+    padding: 0.75rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .tokenomics {
+    padding: 1rem 0.5rem;
+  }
+  
+  .token-content {
+    gap: 2rem;
+  }
+  
+  .stat-card {
+    padding: 1rem;
+  }
+  
+  .stat-value {
+    font-size: 1.5rem;
+  }
+  
+  .token-distribution {
+    padding: 1rem;
+  }
 }
 
 /* Theme Classes */
@@ -115,22 +280,6 @@ const tokenomicsClass = computed(() => isDarkMode.value ? 'dark-theme' : 'light-
   --glow: var(--dark-glow);
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
-}
-
-section {
-  padding: 6rem 0;
-}
-
-h2 {
-  font-size: 2.5rem;
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
 .gradient-text {
   background: linear-gradient(135deg, var(--primary), var(--secondary));
   -webkit-background-clip: text;
@@ -142,47 +291,6 @@ h2 {
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 2rem;
   margin-top: 3rem;
-}
-
-.stat-card {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 12px;
-  padding: 2rem;
-  text-align: center;
-}
-
-.stat-value {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: var(--primary);
-  margin-top: 1rem;
-}
-
-.distribution-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 2rem;
-  margin-top: 3rem;
-}
-
-.distribution-card {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 12px;
-  padding: 2rem;
-  text-align: center;
-  transition: transform 0.3s ease;
-}
-
-.distribution-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow);
-}
-
-.distribution-icon {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
 }
 
 .utility-grid {
@@ -198,19 +306,5 @@ h2 {
   border-radius: 12px;
   padding: 2rem;
   text-align: center;
-}
-
-@media (max-width: 768px) {
-  section {
-    padding: 4rem 0;
-  }
-
-  h2 {
-    font-size: 2rem;
-  }
-
-  .stat-value {
-    font-size: 1.25rem;
-  }
 }
 </style> 

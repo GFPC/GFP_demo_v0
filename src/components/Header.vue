@@ -25,6 +25,35 @@
               <router-link to="/key-verifier" class="dropdown-link" @click="closeMobileMenu">Key Verifier</router-link>
             </div>
           </div>
+          
+          <!-- Mobile Theme Controls -->
+          <div class="mobile-theme-controls">
+            <div class="theme-toggle">
+              <span>Theme</span>
+              <button @click="toggleTheme" class="theme-button" :title="isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'">
+                <span v-if="isDarkMode">🌙</span>
+                <span v-else>☀️</span>
+              </button>
+            </div>
+            
+            <div class="color-theme-toggle">
+              <span>Color</span>
+              <button @click="toggleColorMenu" class="color-toggle" title="Select Color Theme">
+                🎨
+              </button>
+              <div class="color-menu" :class="{ active: isColorMenuOpen }">
+                <button 
+                  v-for="color in ['purple', 'green', 'red', 'blue']" 
+                  :key="color"
+                  @click="selectColor(color)"
+                  :class="{ active: currentColorTheme === color }"
+                  class="color-button"
+                >
+                  {{ color }}
+                </button>
+              </div>
+            </div>
+          </div>
         </nav>
         
         <div class="actions" :class="{ 'mobile-open': isMobileMenuOpen }">
@@ -34,7 +63,7 @@
               <span v-else>☀️</span>
             </button>
             
-            <button @click="isColorMenuOpen = !isColorMenuOpen" class="color-toggle" title="Select Color Theme">
+            <button @click="toggleColorMenu" class="color-toggle" title="Select Color Theme">
               🎨
             </button>
             
@@ -95,6 +124,10 @@ const toggleDevelopersMenu = () => {
   if (window.innerWidth <= 768) {
     isDevelopersMenuOpen.value = !isDevelopersMenuOpen.value;
   }
+};
+
+const toggleColorMenu = () => {
+  isColorMenuOpen.value = !isColorMenuOpen.value;
 };
 
 onMounted(() => {
@@ -393,6 +426,29 @@ onMounted(() => {
   bottom: 0;
 }
 
+.mobile-theme-controls {
+  display: none;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--card-border);
+}
+
+.theme-toggle,
+.color-theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+}
+
+.theme-toggle span,
+.color-theme-toggle span {
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
 @media (max-width: 768px) {
   .mobile-menu-btn {
     display: block;
@@ -402,7 +458,7 @@ onMounted(() => {
     position: fixed;
     top: 0;
     left: -100%;
-    width: 80%;
+    width: 100%;
     height: 100vh;
     background: var(--card-bg);
     padding: 2rem;
@@ -411,6 +467,20 @@ onMounted(() => {
     gap: 1.5rem;
     transition: left 0.3s ease;
     z-index: 1000;
+    backdrop-filter: none;
+    box-shadow: none;
+    opacity: 1;
+  }
+  
+  .nav::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--card-bg);
+    z-index: -1;
   }
   
   .nav.mobile-open {
@@ -420,16 +490,22 @@ onMounted(() => {
   .nav-link {
     font-size: 1.2rem;
     padding: 1rem 0;
+    text-align: center;
+    width: 100%;
+    background: transparent;
   }
   
   .dropdown {
     width: 100%;
+    text-align: center;
+    background: transparent;
   }
   
   .dropdown-btn {
     width: 100%;
-    text-align: left;
+    text-align: center;
     padding: 1rem 0;
+    background: transparent;
   }
   
   .dropdown-content {
@@ -439,8 +515,10 @@ onMounted(() => {
     visibility: visible;
     transform: none;
     display: none;
-    padding: 0.5rem 0 0.5rem 1rem;
-    border-left: 2px solid var(--gradient);
+    padding: 0.5rem 0;
+    border-left: none;
+    text-align: center;
+    background: var(--card-bg);
   }
   
   .dropdown-content.mobile-open {
@@ -449,13 +527,110 @@ onMounted(() => {
   
   .dropdown-link {
     padding: 0.75rem 0;
+    text-align: center;
+    display: block;
+    background: transparent;
+  }
+  
+  .mobile-theme-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--card-border);
+    text-align: center;
+    background: transparent;
+  }
+  
+  .theme-toggle,
+  .color-theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 0.5rem 0;
+    background: transparent;
+  }
+  
+  .color-theme-toggle {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+  }
+  
+  .color-menu {
+    position: static;
+    display: none;
+    width: 100%;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    transform: none;
+    box-shadow: var(--shadow);
+  }
+  
+  .color-menu.active {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .color-button {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--card-border);
+    transition: all 0.3s ease;
+    text-align: center;
+    font-size: 1rem;
+    text-transform: capitalize;
+  }
+  
+  .color-button:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+  
+  .color-button.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+  
+  .color-toggle {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    gap: 0.5rem;
+  }
+  
+  .color-toggle span {
+    font-size: 1rem;
   }
   
   .actions {
     position: fixed;
     bottom: 0;
     left: 0;
-    width: 80%;
+    width: 100%;
     padding: 1rem;
     background: var(--card-bg);
     display: flex;
@@ -463,24 +638,22 @@ onMounted(() => {
     gap: 1rem;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
+    box-shadow: none;
   }
   
   .actions.mobile-open {
     transform: translateX(0);
   }
   
-  .theme-actions {
-    justify-content: center;
-  }
-  
-  .connect-button {
-    width: 100%;
-  }
-  
-  .color-menu {
-    position: static;
-    width: 100%;
-    margin-top: 0.5rem;
+  .actions::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--card-bg);
+    z-index: -1;
   }
 }
 </style> 
